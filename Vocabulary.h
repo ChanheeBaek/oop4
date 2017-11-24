@@ -10,9 +10,8 @@ private:
 
 	vector<Word> vocabulary;		//단어장	
 
-public:
+public:	
 	
-	Vocabulary();			//생성자 
 	int getSize();			//단어장 단어수
 	void add(Word);			//단어장에 단어추가
 	void del(string s);		//단어장에 단어삭제

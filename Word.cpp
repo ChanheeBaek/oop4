@@ -1,6 +1,7 @@
 #include "Word.h"
 
-Word::Word(string* w)
+
+Word::Word(string w[])
 {
 	word = w[0];
 	meaning = w[1];

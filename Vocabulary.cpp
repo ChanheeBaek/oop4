@@ -1,9 +1,6 @@
 #include "Vocabulary.h"
+#include <iostream>
 
-Vocabulary::Vocabulary()
-{
-
-}
 
 int Vocabulary::getSize()
 {
@@ -33,10 +30,17 @@ int Vocabulary::search(string w)
 
 void Vocabulary::showAll()
 {
-	/* 이쁘게 꾸며야함 */
+	vector<Word>::iterator it;
+	for (it = vocabulary.begin(); it < vocabulary.end(); it++)
+		printf("\t%-15s  %s\n", it->getWord().c_str(), it->getMeaning().c_str());	
 }
 
 void Vocabulary::showBookmark()
 {
-	/* 이쁘게 꾸며야함*/
+	vector<Word>::iterator it;
+	for (it = vocabulary.begin(); it < vocabulary.end(); it++)
+	{
+		if (it->getBookmark())
+			printf("\t%-15s  %s\n", it->getWord().c_str(), it->getMeaning().c_str());
+	}
 }
