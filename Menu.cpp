@@ -17,6 +17,7 @@ MainMenu ShowMenu()
 		//원하는 메뉴 입력받기
 		char select;
 		cin >> select;
+
 		switch (select)
 		{
 		case '1':
