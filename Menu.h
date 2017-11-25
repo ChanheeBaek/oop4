@@ -16,3 +16,4 @@ AdminMenu ShowAdminMenu(Member* member);
 
 enum StudyMenu { S_bookmark, S_Meaning, S_Word, S_Together, S_exit};
 StudyMenu ShowStudyMenu(Member* member );
+

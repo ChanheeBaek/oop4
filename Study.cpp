@@ -43,15 +43,16 @@ void Study::showMeaning()
 	int i = 0;
 	// 여기하다가 망 여기도 menu.cpp로 해야할텐데
 	while (i < wordlist.getSize())
-	{			
+	{
 		system("cls");
 		gotoxy(10, 5);
 		if (wordlist.getWord(i).getBookmark()) //bookmark 된 것 표시
 			cout << "* " << wordlist.getWord(i).getMeaning();
 		else
 			cout << wordlist.getWord(i).getMeaning();
-		gotoxy(10, 10);		
-		
+		i++;
+		gotoxy(10, 10);
+
 		do{
 			cout << "1. 답 확인하기\n";
 			cout << "2. 다음 단어\n";
@@ -73,19 +74,21 @@ void Study::showMeaning()
 				wordlist.getWord(i).changeBookmark();
 				break;
 			case '4':
+
 				break;
 			default:
 				cout << "\n올바른 메뉴를 선택해주세요\n";
 				break;
 			}
-		} while (!(select == '1' || select == '2' || select == '3'));
-	return A_exit;
+		} while (1/*조건설정..*/);
+
+	}
 }
-void showWord()
+void Study::showWord()
 {
 
 }
-void showTogether()
+void Study::showTogether()
 {
 
 }

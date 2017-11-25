@@ -56,7 +56,9 @@ LoginMenu ShowLoginMenu(Member* member) {
 			WordbookMenu wordbookmenu;
 			wordbookmenu = ShowWordbookMenu(member);
 			return L_wordbook;
-		case '2':
+		case '2':		
+			StudyMenu studymenu;
+			studymenu = ShowStudyMenu(member);			
 			return L_memorize;
 		case '3':
 			return L_quiz;
@@ -141,4 +143,41 @@ AdminMenu ShowAdminMenu(Member* member)
       }
    }
    return A_exit;
+}
+
+StudyMenu ShowStudyMenu(Member* member)
+{
+	//메뉴를 제대로 입력받을 때까지 반복
+	while (1)
+	{
+		//화면 초기화
+		system("cls");
+
+		cout << "1. 북마크한 단어보기\n";
+		cout << "2. 의미만 보기\n";
+		cout << "3. 단어만 보기\n";
+		cout << "4. 단어&의미 함께 보기\n";
+		cout << "5. 종료\n";
+		//원하는 메뉴 입력받기
+		char select;
+		cin >> select;
+
+		switch (select)
+		{
+		case '1':
+			return  S_bookmark;//북마크보기
+		case '2':
+			return  S_Meaning;//의미만보기
+		case '3':
+			return S_Word;//단어만보기
+		case '4':
+			return S_Together;//함께보기
+		case '5':
+			return S_exit;//종료
+		default:
+			cout << "\n올바른 메뉴를 선택해주세요\n";
+			break;
+		}
+	}
+	return S_exit;
 }
