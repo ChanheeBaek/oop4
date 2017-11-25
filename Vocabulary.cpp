@@ -52,3 +52,8 @@ Word Vocabulary::getWord(int i)
 {
 	return vocabulary[i];
 }
+
+void Vocabulary::changeBookmark(int i)
+{
+	vocabulary[i].changeBookmark();
+}

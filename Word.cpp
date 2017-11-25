@@ -28,5 +28,8 @@ bool Word::getBookmark()
 
 void Word::changeBookmark()
 {
-	bookmark = !bookmark;
+	if (bookmark)
+		bookmark = false;
+	else
+		bookmark = true;
 }

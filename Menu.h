@@ -7,7 +7,7 @@ MainMenu ShowMenu();
 enum LoginMenu { L_wordbook, L_memorize, L_quiz, L_exit };
 LoginMenu ShowLoginMenu(Member* member);
 
-enum WordbookMenu { W_all, W_add, W_search, W_exit };
+enum WordbookMenu { W_add, W_search, W_delete, W_exit };
 WordbookMenu ShowWordbookMenu(Member* member);
 
 

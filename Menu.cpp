@@ -1,6 +1,7 @@
 #include <iostream>
-#include "menu.h"
-#include "member.h"
+#include "Menu.h"
+#include "Member.h"
+#include "Study.h"
 
 using namespace std;
 
@@ -78,27 +79,26 @@ WordbookMenu ShowWordbookMenu(Member* member) {
 	{
 		//화면 초기화
 		system("cls");
+		//모든단어
+		member->wordlist.showAll();
+		cout << endl;//한줄뛰고
 		//메뉴
-		cout << "1. 단어보기\n";
-		cout << "2. 단어추가\n";
-		cout << "3. 단어찾기\n";
+		cout << "1. 단어추가\n";
+		cout << "2. 단어찾기\n";
+		cout << "3. 단어삭제\n";
 		cout << "4. 종료\n";
 		//원하는 메뉴 입력받기
 		char select;
 		cin >> select;
-		cin.clear();
-		cin.ignore(std::numeric_limits<streamsize>::max(), '\n');
 
 		switch (select)
 		{
 		case '1':
-			member->wordlist.showAll();
-			system("pause");
-			return W_all;//단어보기
-		case '2':
 			return W_add;//단어추가
-		case '3':
+		case '2':
 			return W_search;//단어찾기
+		case '3':
+			return W_delete;//단어삭제
 		case '4':
 			return W_exit;//종료
 		default:
@@ -153,10 +153,12 @@ StudyMenu ShowStudyMenu(Member* member)
 		//화면 초기화
 		system("cls");
 
-		cout << "1. 북마크한 단어보기\n";
-		cout << "2. 의미만 보기\n";
-		cout << "3. 단어만 보기\n";
-		cout << "4. 단어&의미 함께 보기\n";
+		Study study(member->wordlist);//회원에 단어장 study에추가
+
+		cout << "1. 북마크보기\n";
+		cout << "2. 의미만보기\n";
+		cout << "3. 단어만보기\n";
+		cout << "4. 함께보기\n";
 		cout << "5. 종료\n";
 		//원하는 메뉴 입력받기
 		char select;
@@ -167,6 +169,8 @@ StudyMenu ShowStudyMenu(Member* member)
 		case '1':
 			return  S_bookmark;//북마크보기
 		case '2':
+			study.showMeaning();
+			break;
 			return  S_Meaning;//의미만보기
 		case '3':
 			return S_Word;//단어만보기
