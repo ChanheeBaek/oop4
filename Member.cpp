@@ -11,8 +11,7 @@ void Member::signup() {
 	ID[1] = ".txt";
 	system("cls");
 	while (1) {
-		cout << "ID(8글자이내) : ";
-		cin.clear();	//입력버퍼 초기화		
+		cout << "ID(8글자이내) : ";		
 		getline(cin, ID[0]);
 		while (ID[0].length() == 0 || ID[0].length() > 8) {
 			cout << "아이디는 반드시 입력해야하고 최대 8자 입력해야합니다\n";
@@ -57,9 +56,7 @@ bool Member::login() {
 	ID[1] = ".txt";
 	system("cls");
 	while (1) {
-		cout << "ID : ";
-		cin.clear();	//입력버퍼 초기화
-		cin.ignore(std::numeric_limits<streamsize>::max(), '\n');
+		cout << "ID : ";		
 		getline(cin, ID[0]);
 		ID[0] = ID[0] + ID[1];
 		ifstream myfile(ID[0]);

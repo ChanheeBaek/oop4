@@ -17,6 +17,8 @@ MainMenu ShowMenu()
 		//원하는 메뉴 입력받기
 		char select;
 		cin >> select;
+		cin.clear();	//입력버퍼 초기화
+		cin.ignore(std::numeric_limits<streamsize>::max(), '\n');
 
 		switch (select)
 		{
