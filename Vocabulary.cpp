@@ -18,7 +18,7 @@ void Vocabulary::del(string w)
 }
 
 int Vocabulary::search(string w)
-{	
+{
 	for (int i = 0; i < getSize(); i++)
 	{
 		if (vocabulary[i].getWord() == w) //word°¡ ÀÏÄ¡
@@ -32,7 +32,8 @@ void Vocabulary::showAll()
 {
 	vector<Word>::iterator it;
 	for (it = vocabulary.begin(); it < vocabulary.end(); it++)
-		printf("\t%-15s  %s\n", it->getWord().c_str(), it->getMeaning().c_str());	
+		printf("\t%-15s  %s\n", it->getWord().c_str(), it->getMeaning().c_str());
+
 }
 
 void Vocabulary::showBookmark()

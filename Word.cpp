@@ -1,5 +1,5 @@
 #include "Word.h"
-
+#include <iostream>
 
 Word::Word(string w[])
 {

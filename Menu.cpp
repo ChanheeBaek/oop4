@@ -1,5 +1,7 @@
 #include <iostream>
 #include "menu.h"
+#include "member.h"
+
 using namespace std;
 
 //맨처음 기본 시작메뉴
@@ -17,8 +19,6 @@ MainMenu ShowMenu()
 		//원하는 메뉴 입력받기
 		char select;
 		cin >> select;
-		cin.clear();	//입력버퍼 초기화
-		cin.ignore(std::numeric_limits<streamsize>::max(), '\n');
 
 		switch (select)
 		{
@@ -36,7 +36,7 @@ MainMenu ShowMenu()
 	return M_exit;
 }
 
-LoginMenu ShowLoginMenu() {
+LoginMenu ShowLoginMenu(Member* member) {
 	//메뉴를 제대로 입력받을 때까지 반복
 	while (1)
 	{
@@ -54,7 +54,7 @@ LoginMenu ShowLoginMenu() {
 		{
 		case '1':
 			WordbookMenu wordbookmenu;
-			wordbookmenu = ShowWordbookMenu();
+			wordbookmenu = ShowWordbookMenu(member);
 			return L_wordbook;
 		case '2':
 			return L_memorize;
@@ -70,7 +70,7 @@ LoginMenu ShowLoginMenu() {
 	return L_exit;
 }
 
-WordbookMenu ShowWordbookMenu() {
+WordbookMenu ShowWordbookMenu(Member* member) {
 	//메뉴를 제대로 입력받을 때까지 반복
 	while (1)
 	{
@@ -84,9 +84,14 @@ WordbookMenu ShowWordbookMenu() {
 		//원하는 메뉴 입력받기
 		char select;
 		cin >> select;
+		cin.clear();
+		cin.ignore(std::numeric_limits<streamsize>::max(), '\n');
+
 		switch (select)
 		{
 		case '1':
+			member->wordlist.showAll();
+			system("pause");
 			return W_all;//단어보기
 		case '2':
 			return W_add;//단어추가
@@ -100,4 +105,38 @@ WordbookMenu ShowWordbookMenu() {
 		}
 	}
 	return W_exit;
+}
+
+AdminMenu ShowAdminMenu(Member* member)
+{
+	//메뉴를 제대로 입력받을 때까지 반복
+	while (1)
+	{
+		//화면 초기화
+		system("cls");
+		//메뉴
+		cout << "1. 단어보기\n";
+		cout << "2. 단어추가\n";
+		cout << "3. 단어삭제\n";
+		cout << "4. 종료\n";
+		//원하는 메뉴 입력받기
+		char select;
+		cin >> select;
+
+		switch (select)
+		{
+		case '1':
+			return A_all;//전체단어보기
+		case '2':
+			return A_add;//단어추가
+		case '3':
+			return A_sub;//단어빼기
+		case '4':
+			return A_exit;
+		default:
+			cout << "\n올바른 메뉴를 선택해주세요\n";
+			break;
+		}
+	}
+	return A_exit;
 }

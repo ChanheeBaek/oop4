@@ -1,17 +1,19 @@
 #include "member.h"
+#include "menu.h"
 
-/* 나중에 시간남으면 추가 해보는게 어떨까? 
-	1. 비밀번호 입력받을때 안보이게 ******이런 식으로 표시되게 
-	2. 비밀번호 조건을 특수문자 하나이상 포함과 같이 조건부여하기
-	3. 비밀번호 여러번 틀리면 자동종료	
+/* 나중에 시간남으면 추가 해보는게 어떨까?
+1. 비밀번호 입력받을때 안보이게 ******이런 식으로 표시되게
+2. 비밀번호 조건을 특수문자 하나이상 포함과 같이 조건부여하기
+3. 비밀번호 여러번 틀리면 자동종료
 */
 
 void Member::signup() {
 	string ID[4];//ID[0] = 입력받은ID, ID[1] = .txt ID[2] = 패스워드 ID[3] = 패스워드확인
 	ID[1] = ".txt";
 	system("cls");
+	getline(cin, ID[0]);
 	while (1) {
-		cout << "ID(8글자이내) : ";		
+		cout << "ID(8글자이내) : ";
 		getline(cin, ID[0]);
 		while (ID[0].length() == 0 || ID[0].length() > 8) {
 			cout << "아이디는 반드시 입력해야하고 최대 8자 입력해야합니다\n";
@@ -55,8 +57,9 @@ bool Member::login() {
 	string ID[4];//ID[0] = 입력받은ID, ID[1] = .txt ID[2] = 패스워드 ID[3] = 패스워드확인
 	ID[1] = ".txt";
 	system("cls");
+	getline(cin, ID[0]);
 	while (1) {
-		cout << "ID : ";		
+		cout << "ID : ";
 		getline(cin, ID[0]);
 		ID[0] = ID[0] + ID[1];
 		ifstream myfile(ID[0]);
@@ -66,7 +69,27 @@ bool Member::login() {
 				cout << "Password : ";
 				getline(cin, ID[2]);
 				if (ID[2] == ID[3]) {
-					/* 여기에 파일 입력으로 단어 읽어오자*/
+					/*만약ID[0]가 admin이면 admin메뉴 실행이부분은 return false로 다음 ID로그인창안뜨게설정*/
+					if (ID[0] == "admin.txt") {
+						adminlogin();
+						return false;
+					}
+					//여기서부터 파일 읽어오는 부분 한줄씩 읽어서 '/' 기준으로 자른 뒤 wordlist에 저장
+					string str[3];//3개항목저장할곳
+					string line;//파일에서 단어 한줄씩 읽어서 저장하는곳
+					string cutter = "/";//자르는기준
+					int index;
+					while (!myfile.eof())
+					{
+						getline(myfile, line);
+						for (int k = 0; k<3; k++) {
+							index = line.find(cutter);
+							str[k] = line.substr(0, index);
+							line = line.substr(index + 1, line.length());
+						}
+						Word a(str);
+						wordlist.add(a);
+					}
 					return true;
 				}
 				else {
@@ -91,6 +114,78 @@ bool Member::login() {
 				cin >> a;
 			}
 		}
+	}
+}
+
+
+bool Member::adminlogin() {
+	system("cls");
+	cout << "1.ID" << endl;
+	cout << "2.전체퀴즈결과" << endl;
+	cout << "3.종료" << endl;
+	int a;
+	cin >> a;
+	while (1) {
+		if (a == 1) {
+			string ID[2];//ID[0] = 입력받은ID, ID[1] = .txt
+			ID[1] = ".txt";
+			system("cls");
+			while (1) {
+				cout << "ID : ";
+				cin.clear();	//입력버퍼 초기화
+				cin.ignore(std::numeric_limits<streamsize>::max(), '\n');
+				getline(cin, ID[0]);
+				ID[0] = ID[0] + ID[1];
+				ifstream myfile(ID[0]);
+				if (myfile.is_open()) {
+					Vocabulary* wordlist = new Vocabulary;
+					string str[3];//3개항목저장할곳
+					string line;//파일에서 단어 한줄씩 읽어서 저장하는곳
+					string cutter = "/";//자르는기준
+					int index;
+					getline(myfile, line);//첫번째줄은 비번이므로 읽어서 넘김
+					while (!myfile.eof())
+					{
+						getline(myfile, line);
+						for (int k = 0; k<3; k++) {
+							index = line.find(cutter);
+							str[k] = line.substr(0, index);
+							line = line.substr(index + 1, line.length());
+						}
+						Word a(str);
+						wordlist->add(a);
+					}
+					AdminMenu adminmenu;
+					adminmenu = ShowAdminMenu(this);
+					return false;//adminlogin빠져나가기
+				}
+				else {
+					cout << "등록되어있지 않은 ID입니다. 메뉴를 종료 하시겠습니까? 1.YES 2.NO  ";
+					int a;
+					cin >> a;
+					while (1) {
+						if (a == 1) {
+							return false;//메뉴종료해서 빠져나가도록
+						}
+						else if (a == 2) {
+							break;//no일경우 다시 메뉴로 나가 ID다시입력받도록함
+						}
+						else
+							cout << "잘못된 값을 입력하셨습니다.재확인 바랍니다. 1.YES 2.NO  ";
+						cin >> a;
+					}
+				}
+			}
+			return false;
+		}//ID
+		else if (a == 2) {
+			return false;
+		}//전체퀴즈
+		else if (a == 3) {
+			return false;
+		}//메인메뉴로 돌아가게
+		cout << "잘못된 값을 입력하셨습니다.재확인 바랍니다. 1.YES 2.NO  ";
+		cin >> a;
 	}
 }
 
