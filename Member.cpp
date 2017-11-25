@@ -117,7 +117,6 @@ bool Member::login() {
 	}
 }
 
-
 bool Member::adminlogin() {
 	system("cls");
 	cout << "1.ID" << endl;
@@ -130,20 +129,18 @@ bool Member::adminlogin() {
 			string ID[2];//ID[0] = 입력받은ID, ID[1] = .txt
 			ID[1] = ".txt";
 			system("cls");
+			getline(cin, ID[0]);
 			while (1) {
 				cout << "ID : ";
-				cin.clear();	//입력버퍼 초기화
-				cin.ignore(std::numeric_limits<streamsize>::max(), '\n');
 				getline(cin, ID[0]);
 				ID[0] = ID[0] + ID[1];
 				ifstream myfile(ID[0]);
 				if (myfile.is_open()) {
-					Vocabulary* wordlist = new Vocabulary;
 					string str[3];//3개항목저장할곳
 					string line;//파일에서 단어 한줄씩 읽어서 저장하는곳
 					string cutter = "/";//자르는기준
 					int index;
-					getline(myfile, line);//첫번째줄은 비번이므로 읽어서 넘김
+					getline(myfile, line);//처음은 비번이라 한번 읽은뒤 다음줄부터실행
 					while (!myfile.eof())
 					{
 						getline(myfile, line);
@@ -153,30 +150,31 @@ bool Member::adminlogin() {
 							line = line.substr(index + 1, line.length());
 						}
 						Word a(str);
-						wordlist->add(a);
+						wordlist.add(a);
 					}
 					AdminMenu adminmenu;
 					adminmenu = ShowAdminMenu(this);
-					return false;//adminlogin빠져나가기
+					return true;//adminlogin빠져나가기
 				}
 				else {
 					cout << "등록되어있지 않은 ID입니다. 메뉴를 종료 하시겠습니까? 1.YES 2.NO  ";
-					int a;
-					cin >> a;
+					int b;
+					cin >> b;
 					while (1) {
-						if (a == 1) {
+						if (b == 1) {
 							return false;//메뉴종료해서 빠져나가도록
 						}
-						else if (a == 2) {
+						else if (b == 2) {
 							break;//no일경우 다시 메뉴로 나가 ID다시입력받도록함
 						}
 						else
 							cout << "잘못된 값을 입력하셨습니다.재확인 바랍니다. 1.YES 2.NO  ";
-						cin >> a;
+						cin >> b;
 					}
 				}
+				break;
 			}
-			return false;
+			continue;
 		}//ID
 		else if (a == 2) {
 			return false;
@@ -188,4 +186,5 @@ bool Member::adminlogin() {
 		cin >> a;
 	}
 }
+
 

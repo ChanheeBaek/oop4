@@ -30,18 +30,25 @@ int Vocabulary::search(string w)
 
 void Vocabulary::showAll()
 {
-	vector<Word>::iterator it;
-	for (it = vocabulary.begin(); it < vocabulary.end(); it++)
+	vector<Word>::reverse_iterator it;
+	
+	for (it = vocabulary.rbegin(); it!=vocabulary.rend(); it++)
 		printf("\t%-15s  %s\n", it->getWord().c_str(), it->getMeaning().c_str());
 
 }
 
 void Vocabulary::showBookmark()
 {
-	vector<Word>::iterator it;
-	for (it = vocabulary.begin(); it < vocabulary.end(); it++)
+	vector<Word>::reverse_iterator it;
+
+	for (it = vocabulary.rbegin(); it!=vocabulary.rend(); it++)
 	{
 		if (it->getBookmark())
 			printf("\t%-15s  %s\n", it->getWord().c_str(), it->getMeaning().c_str());
 	}
+}
+
+Word Vocabulary::getWord(int i)
+{
+	return vocabulary[i];
 }
