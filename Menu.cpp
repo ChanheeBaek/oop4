@@ -84,7 +84,7 @@ LoginMenu ShowLoginMenu(Member* member) {
 				}
 				writei++;
 			}
-			writefile << member->wordlist.getSize();
+			
 			writefile.close();//마무리로 파일 닫음
 			return L_exit;
 		default:
