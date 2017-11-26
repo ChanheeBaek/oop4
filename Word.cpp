@@ -33,3 +33,8 @@ void Word::changeBookmark()
 	else
 		bookmark = true;
 }
+
+void Word::changeMeaning(string s)
+{
+	meaning = s;
+}

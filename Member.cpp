@@ -65,6 +65,8 @@ bool Member::login() {
 		ifstream myfile(ID[0]);
 		if (myfile.is_open()) {
 			getline(myfile, ID[3]);//파일이름이 있으면 패스워드 확인하기 위해 미리 저장
+			readID = ID[0];//성공적으로 열었을시 ID저장
+			password = ID[3];//저장되어있는 password에 따라 저장
 			while (1) {
 				cout << "Password : ";
 				getline(cin, ID[2]);
@@ -78,14 +80,18 @@ bool Member::login() {
 					string str[3];//3개항목저장할곳
 					string line;//파일에서 단어 한줄씩 읽어서 저장하는곳
 					string cutter = "/";//자르는기준
-					int index;
+					int index, sindex;
 					while (!myfile.eof())
 					{
 						getline(myfile, line);
-						for (int k = 0; k<3; k++) {
-							index = line.find(cutter);
-							str[k] = line.substr(0, index);
-							line = line.substr(index + 1, line.length());
+						index = line.find(cutter);
+						if (index == -1)
+							break;
+						str[0] = line.substr(0, index);						
+						for (int k = 1; k<3; k++) {
+							sindex = index + 1;
+							index = line.find(cutter, sindex);							
+							str[k] = line.substr(sindex, index-sindex);							
 						}
 						Word a(str);
 						wordlist.add(a);
