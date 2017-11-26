@@ -187,4 +187,12 @@ bool Member::adminlogin() {
 	}
 }
 
+string Member::getID() {
+	return readID;
+}
+string Member::getPassword() {
+	return password;
+}
+
+
 

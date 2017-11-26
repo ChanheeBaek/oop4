@@ -48,6 +48,9 @@ LoginMenu ShowLoginMenu(Member* member) {
 		cout << "2. 암기\n";
 		cout << "3. 퀴즈\n";
 		cout << "4. 종료\n";
+		//로그인시 바로 파일쓸수 있게 준비
+		ofstream writefile(member->getID());
+		int writei = 0;//writei는 마지막에 종료시 파일에 순서대로 단어작성위해 필요
 		//원하는 메뉴 입력받기
 		char select;
 		cin >> select;
@@ -56,14 +59,31 @@ LoginMenu ShowLoginMenu(Member* member) {
 		case '1':
 			WordbookMenu wordbookmenu;
 			wordbookmenu = ShowWordbookMenu(member);
+			break;
 			return L_wordbook;
-		case '2':		
+		case '2':
 			StudyMenu studymenu;
-			studymenu = ShowStudyMenu(member);			
+			studymenu = ShowStudyMenu(member);
+			break;
 			return L_memorize;
 		case '3':
 			return L_quiz;
 		case '4':
+			//첫줄먼저 password 입력 후 줄바꿈
+			writefile << member->getPassword() << endl;
+			while (writei < member->wordlist.getSize() - 1 )
+			{//마지막줄북마크 입력전 입력 while으로 돌림
+				writefile << member->wordlist.getWord(writei).getWord() << "/" << member->wordlist.getWord(writei).getMeaning() << "/";
+				if (member->wordlist.getWord(writei).getBookmark() == true) {//북마크O시 O입력
+					writefile << "O" << endl;
+				}
+				else {//북마크x시 x입력
+					writefile << "X" << endl;
+				}
+				writei++;
+			}
+			
+			writefile.close();//마무리로 파일 닫음
 			return L_exit;
 		default:
 			cout << "\n올바른 메뉴를 선택해주세요\n";
@@ -72,6 +92,7 @@ LoginMenu ShowLoginMenu(Member* member) {
 	}
 	return L_exit;
 }
+
 
 WordbookMenu ShowWordbookMenu(Member* member) {
 	//메뉴를 제대로 입력받을 때까지 반복
