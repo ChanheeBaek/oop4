@@ -158,8 +158,8 @@ bool Member::adminlogin() {
 						Word a(str);
 						wordlist.add(a);
 					}
-					AdminMenu adminmenu;
-					adminmenu = ShowAdminMenu(this);
+					WordbookMenu wordbookmenu;
+					wordbookmenu = ShowWordbookMenu(this);
 					return true;//adminlogin빠져나가기
 				}
 				else {
@@ -200,5 +200,23 @@ string Member::getPassword() {
 	return password;
 }
 
+void Member::writefile() {
+	ofstream writefile;
+	int writei = 0;//writei는 마지막에 종료시 파일에 순서대로 단어작성위해 필요
+	writefile.open(getID());
+	writefile << getPassword() << endl;
 
+	while (writei < wordlist.getSize())
+	{//마지막줄북마크 입력전 입력 while으로 돌림
+		writefile << wordlist.getWord(writei).getWord() << "/" << wordlist.getWord(writei).getMeaning() << "/";
+		if (wordlist.getWord(writei).getBookmark() == true) {//북마크O시 O입력
+			writefile << "O" << endl;
+		}
+		else {//북마크x시 x입력
+			writefile << "X" << endl;
+		}
+		writei++;
+	}
+	writefile.close();//마무리로 파일 닫음
+}
 

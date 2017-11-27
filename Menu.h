@@ -10,10 +10,8 @@ LoginMenu ShowLoginMenu(Member* member);
 enum WordbookMenu { W_add, W_search, W_delete, W_exit };
 WordbookMenu ShowWordbookMenu(Member* member);
 
-
-enum AdminMenu { A_add, A_search, A_delete, A_exit };
-AdminMenu ShowAdminMenu(Member* member);
-
 enum StudyMenu { S_bookmark, S_Meaning, S_Word, S_Together, S_exit};
 StudyMenu ShowStudyMenu(Member* member );
 
+enum QuizMenu { Q_bookmarkquiz, Q_meaningquiz, Q_exit };
+QuizMenu ShowQuizMenu(Member* member);

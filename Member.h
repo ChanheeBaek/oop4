@@ -19,6 +19,7 @@ public:
 	bool login();
 	string getID();
 	string getPassword();
+	void writefile();
 };
 
 

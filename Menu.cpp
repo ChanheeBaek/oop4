@@ -3,6 +3,7 @@
 #include "Member.h"
 #include "Study.h"
 #include "Word.h"
+#include "Quiz.h"
 
 using namespace std;
 
@@ -68,6 +69,9 @@ LoginMenu ShowLoginMenu(Member* member) {
 			break;
 			return L_memorize;
 		case '3':
+			QuizMenu quizmenu;
+			quizmenu = ShowQuizMenu(member);
+			break;
 			return L_quiz;
 		case '4':
 			writefile.open(member->getID());
@@ -162,7 +166,7 @@ WordbookMenu ShowWordbookMenu(Member* member) {
 				s[2] = "X"; //초기값 북마크 X
 				Word a(s);
 				member->wordlist.add(s);
-				/* 여기에 파일에다가 출력해줘 add한 것*/
+				member->writefile();
 				cout << "단어가 정상적으로 입력되었습니다.";
 				system("pause>null");
 			}
@@ -222,7 +226,7 @@ WordbookMenu ShowWordbookMenu(Member* member) {
 						if (select == "1")
 						{
 							member->wordlist.del(index);
-							/*여기에 파일입출력으로 삭제*/
+							member->writefile();
 							cout << "단어가 정상적으로 삭제되었습니다.";
 							system("pause>null");
 							while (getchar() != '\n');
@@ -265,42 +269,6 @@ WordbookMenu ShowWordbookMenu(Member* member) {
 				}
 				return W_exit; */
 	}
-}
-
-AdminMenu ShowAdminMenu(Member* member)
-{
-   //메뉴를 제대로 입력받을 때까지 반복
-   while (1)
-   {
-      //화면 초기화
-      system("cls");
-      member->wordlist.showAll();
-      cout << endl;//한줄뛰고
-      //메뉴
-      cout << "1. 단어추가\n";
-      cout << "2. 단어찾기\n";
-      cout << "3. 단어삭제\n";
-      cout << "4. 종료\n";
-      //원하는 메뉴 입력받기
-      char select;
-      cin >> select;
-
-      switch (select)
-      {
-      case '1':
-         return A_add;//단어추가
-      case '2':
-         return A_search;//단어찾기
-      case '3':
-         return A_delete;//단어삭제
-      case '4':
-         return A_exit;
-      default:
-         cout << "\n올바른 메뉴를 선택해주세요\n";
-         break;
-      }
-   }
-   return A_exit;
 }
 
 StudyMenu ShowStudyMenu(Member* member)
@@ -348,4 +316,39 @@ StudyMenu ShowStudyMenu(Member* member)
 		}
 	}
 	return S_exit;
+}
+
+QuizMenu ShowQuizMenu(Member* member) {
+	//메뉴를 제대로 입력받을 때까지 반복
+	while (1)
+	{
+		Quiz q(&(member->wordlist));
+		//화면 초기화
+		system("cls");
+		//메뉴
+		cout << "1. 단어 퀴즈 - 북마크\n";
+		cout << "2. 단어 퀴즈 - 전체\n";;
+		cout << "3. 종료\n";
+
+		//원하는 메뉴 입력받기
+		char select;
+		cin >> select;
+		switch (select)
+		{
+		case '1':
+			q.quizBookmark();  //bookmark quiz 한 결과 string 받아가지고 파일출력해줘 "n"은 무시해
+			break;
+			return Q_bookmarkquiz;
+		case '2':
+			q.quizAll();  //quiz 한 결과 string 받아가지고 파일출력해줘 "n" 은 무시해
+			break;
+			return Q_meaningquiz;
+		case '3':
+			return Q_exit;
+		default:
+			cout << "\n올바른 메뉴를 선택해주세요\n";
+			break;
+		}
+	}
+	return Q_exit;
 }
