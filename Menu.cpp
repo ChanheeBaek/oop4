@@ -51,14 +51,13 @@ LoginMenu ShowLoginMenu(Member* member) {
 		cout << "3. 퀴즈\n";
 		cout << "4. 종료\n";
 		//로그인시 바로 파일쓸수 있게 준비
-		ofstream writefile;
-		int writei = 0;//writei는 마지막에 종료시 파일에 순서대로 단어작성위해 필요
 		//원하는 메뉴 입력받기
 		char select;
 		cin >> select;
 		switch (select)
 		{
 		case '1':
+			while (getchar() != '\n'); //입력버퍼 초기화
 			WordbookMenu wordbookmenu;
 			wordbookmenu = ShowWordbookMenu(member);
 			break;
@@ -74,22 +73,7 @@ LoginMenu ShowLoginMenu(Member* member) {
 			break;
 			return L_quiz;
 		case '4':
-			writefile.open(member->getID());
-			writefile << member->getPassword() << endl;
-			
-			while (writei < member->wordlist.getSize())
-			{//마지막줄북마크 입력전 입력 while으로 돌림
-				writefile << member->wordlist.getWord(writei).getWord() << "/" << member->wordlist.getWord(writei).getMeaning() << "/";
-				if (member->wordlist.getWord(writei).getBookmark() == true) {//북마크O시 O입력
-					writefile << "O" << endl;
-				}
-				else {//북마크x시 x입력
-					writefile << "X" << endl;
-				}
-				writei++;
-			}
-			
-			writefile.close();//마무리로 파일 닫음
+			member->writefile();
 			return L_exit;
 		default:
 			cout << "\n올바른 메뉴를 선택해주세요\n";
@@ -101,14 +85,14 @@ LoginMenu ShowLoginMenu(Member* member) {
 
 
 WordbookMenu ShowWordbookMenu(Member* member) {
-	
+
 	string select;
 	string s[3];
-	while (getchar() != '\n'); //입력버퍼 초기화
+	
 	//메뉴를 제대로 입력받을 때까지 반복
 	while (1)
 	{
-		
+
 		//화면 초기화
 		system("cls");
 		//모든단어
@@ -120,9 +104,9 @@ WordbookMenu ShowWordbookMenu(Member* member) {
 		cout << "3. 단어삭제\n";
 		cout << "4. 종료\n";
 		//원하는 메뉴 입력받기
-		
+
 		getline(cin, select);
-				
+
 		if (select == "1")		//단어 추가
 		{
 			system("cls");
@@ -131,21 +115,21 @@ WordbookMenu ShowWordbookMenu(Member* member) {
 
 			cout << "추가할 단어를 입력해주세요> ";
 			getline(cin, s[0]);
-			
+
 			if (member->wordlist.search(s[0]) != -1)
 			{
 				cout << "이미 존재하는 단어입니다. 수정하시겠습니까?> 1.YES 2.NO";
 				string st; // 임시 string 
-				
+
 				while (1)
 				{
-					
+
 					getline(cin, select);
 					if (select == "1")
 					{
 						cout << "수정할 의미를 입력해주세요> ";
 						getline(cin, st);
-						member->wordlist.changeMeaning(member->wordlist.search(s[0]), st);						
+						member->wordlist.changeMeaning(member->wordlist.search(s[0]), st);
 						cout << "단어가 정상적으로 수정되었습니다.";
 						system("pause>null");
 
@@ -217,11 +201,11 @@ WordbookMenu ShowWordbookMenu(Member* member) {
 				}
 				else
 				{
-					
+
 					cout << "정말 삭제하시겠습니까? 1.YES 2.NO ";
 					while (1)
 					{
-						
+
 						cin >> select;
 						if (select == "1")
 						{
@@ -249,8 +233,8 @@ WordbookMenu ShowWordbookMenu(Member* member) {
 			}
 		}
 		else if (select == "4")
-			return W_exit;			
-	
+			return W_exit;
+
 		else
 		{
 			cout << "\n올바른 메뉴를 선택해주세요\n";
@@ -260,14 +244,14 @@ WordbookMenu ShowWordbookMenu(Member* member) {
 		return W_exit;
 
 		/*
-				case '4':
-				return W_exit;//종료
-				default:
-				cout << "\n올바른 메뉴를 선택해주세요\n";
-				break;
-				}
-				}
-				return W_exit; */
+		case '4':
+		return W_exit;//종료
+		default:
+		cout << "\n올바른 메뉴를 선택해주세요\n";
+		break;
+		}
+		}
+		return W_exit; */
 	}
 }
 
@@ -336,11 +320,11 @@ QuizMenu ShowQuizMenu(Member* member) {
 		switch (select)
 		{
 		case '1':
-			q.quizBookmark();  //bookmark quiz 한 결과 string 받아가지고 파일출력해줘 "n"은 무시해
+			q.quizBookmark();	//string return 하는 거 받아서 출력 "n"이면 에러니까 출력 x		
 			break;
 			return Q_bookmarkquiz;
 		case '2':
-			q.quizAll();  //quiz 한 결과 string 받아가지고 파일출력해줘 "n" 은 무시해
+			q.quizAll();		//string return 하는 거 받아서 출력 "n"이면 에러니까 출력 x
 			break;
 			return Q_meaningquiz;
 		case '3':

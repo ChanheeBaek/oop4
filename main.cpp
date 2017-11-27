@@ -8,7 +8,7 @@
 using namespace std;
 
 void main() {
-	
+
 	while (1) {
 		MainMenu select;
 		Member* member = new Member;

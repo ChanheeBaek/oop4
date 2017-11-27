@@ -3,9 +3,9 @@
 
 #include <iostream>
 #include <string> 
-#include <iostream>
 #include <fstream>
 #include "Vocabulary.h"
+#include "Quizresult.h"
 using namespace std;
 
 class Member {
@@ -20,6 +20,7 @@ public:
 	string getID();
 	string getPassword();
 	void writefile();
+	void writequizresult(string);//퀴즈보고나면 그 결과를 quizresult.txt 파일에 자동으로저장하게만듬 
 };
 
 

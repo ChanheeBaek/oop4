@@ -87,11 +87,11 @@ bool Member::login() {
 						index = line.find(cutter);
 						if (index == -1)
 							break;
-						str[0] = line.substr(0, index);						
+						str[0] = line.substr(0, index);
 						for (int k = 1; k<3; k++) {
 							sindex = index + 1;
-							index = line.find(cutter, sindex);							
-							str[k] = line.substr(sindex, index-sindex);							
+							index = line.find(cutter, sindex);
+							str[k] = line.substr(sindex, index - sindex);
 						}
 						Word a(str);
 						wordlist.add(a);
@@ -124,73 +124,133 @@ bool Member::login() {
 }
 
 bool Member::adminlogin() {
-	system("cls");
-	cout << "1.ID" << endl;
-	cout << "2.전체퀴즈결과" << endl;
-	cout << "3.종료" << endl;
-	int a;
-	cin >> a;
 	while (1) {
-		if (a == 1) {
-			string ID[2];//ID[0] = 입력받은ID, ID[1] = .txt
-			ID[1] = ".txt";
-			system("cls");
-			getline(cin, ID[0]);
-			while (1) {
-				cout << "ID : ";
-				getline(cin, ID[0]);
-				ID[0] = ID[0] + ID[1];
-				ifstream myfile(ID[0]);
-				if (myfile.is_open()) {
-					string str[3];//3개항목저장할곳
-					string line;//파일에서 단어 한줄씩 읽어서 저장하는곳
-					string cutter = "/";//자르는기준
-					int index;
-					getline(myfile, line);//처음은 비번이라 한번 읽은뒤 다음줄부터실행
-					while (!myfile.eof())
-					{
-						getline(myfile, line);
-						for (int k = 0; k<3; k++) {
-							index = line.find(cutter);
-							str[k] = line.substr(0, index);
-							line = line.substr(index + 1, line.length());
-						}
-						Word a(str);
-						wordlist.add(a);
-					}
-					WordbookMenu wordbookmenu;
-					wordbookmenu = ShowWordbookMenu(this);
-					return true;//adminlogin빠져나가기
-				}
-				else {
-					cout << "등록되어있지 않은 ID입니다. 메뉴를 종료 하시겠습니까? 1.YES 2.NO  ";
-					int b;
-					cin >> b;
-					while (1) {
-						if (b == 1) {
-							return false;//메뉴종료해서 빠져나가도록
-						}
-						else if (b == 2) {
-							break;//no일경우 다시 메뉴로 나가 ID다시입력받도록함
-						}
-						else
-							cout << "잘못된 값을 입력하셨습니다.재확인 바랍니다. 1.YES 2.NO  ";
-						cin >> b;
-					}
-				}
-				break;
-			}
-			continue;
-		}//ID
-		else if (a == 2) {
-			return false;
-		}//전체퀴즈
-		else if (a == 3) {
-			return false;
-		}//메인메뉴로 돌아가게
-		cout << "잘못된 값을 입력하셨습니다.재확인 바랍니다. 1.YES 2.NO  ";
+		system("cls");
+		string line;//파일에서 단어 한줄씩 읽어서 저장하는곳
+		int index;
+		cout << "1.ID" << endl;
+		cout << "2.전체퀴즈결과" << endl;
+		cout << "3.종료" << endl;
+		int a;
 		cin >> a;
+		
+		while (1) {
+			if (a == 1) {
+				string ID[2];//ID[0] = 입력받은ID, ID[1] = .txt
+				ID[1] = ".txt";
+				system("cls");
+				while (getchar() != '\n');
+				while (1) {
+					cout << "ID : ";
+					getline(cin, ID[0]);
+					ID[0] = ID[0] + ID[1];
+					ifstream myfile(ID[0]);
+					if (myfile.is_open()) {
+						string str[3];//3개항목저장할곳
+						string cutter = "/";//자르는기준
+						getline(myfile, line);//처음은 비번이라 한번 읽은뒤 다음줄부터실행
+						while (!myfile.eof())
+						{
+							getline(myfile, line);
+							for (int k = 0; k < 3; k++) {
+								index = line.find(cutter);
+								str[k] = line.substr(0, index);
+								line = line.substr(index + 1, line.length());
+							}
+							Word a(str);
+							wordlist.add(a);
+						}
+						WordbookMenu wordbookmenu;
+						wordbookmenu = ShowWordbookMenu(this);
+						return true;
+					}
+					else {
+						cout << "등록되어있지 않은 ID입니다. 메뉴를 종료 하시겠습니까? 1.YES 2.NO  ";
+						int b;
+						cin >> b;
+						while (getchar() != '\n');
+						while (1) {
+							if (b == 1) {
+								return false;//메뉴종료해서 빠져나가도록
+							}
+							else if (b == 2) {
+								break;//no일경우 다시 메뉴로 나가 ID다시입력받도록함
+							}
+							else
+								cout << "잘못된 값을 입력하셨습니다.재확인 바랍니다. 1.YES 2.NO  ";
+							cin >> b;
+						}
+					}
+					break;
+				}
+				continue;
+			}//ID
+			else if (a == 2) {
+				system("cls");
+				cout << "전체 퀴즈 결과" << endl;
+				ifstream quizresultfile("quizresult.txt");
+				string cutter = ":";//자르는기준
+				int firstID = 0;//처음인지아닌지판단하기용
+				vector<Quizresult> sortquizresult;
+				vector<Quizresult>::iterator p1;
+				string str[2];//2개항목저장할곳(아이디,스코어)
+				if (quizresultfile.is_open()) {
+					while (!quizresultfile.eof())
+					{
+						getline(quizresultfile, line);//한줄씩 읽어서
+						index = line.find(cutter);
+						str[0] = line.substr(0, index);//아이디
+						str[1] = line.substr(index + 1, line.length());//점수
+						if (firstID == 0) {//처음에는quizresult 바로 추가
+							sortquizresult.push_back(Quizresult(str[0]));
+							firstID++;
+						}
+						bool sameID = false;
+						for (p1 = sortquizresult.begin(); p1 != sortquizresult.end(); p1++)
+						{
+							if (p1->getID() == str[0]) {
+								p1->add(str[1]);
+								sameID = true;
+								break;
+							}
+						}
+						if (sameID == false) {
+							sortquizresult.push_back(Quizresult(str[0]));//새로추가후 다시찾아서 추가
+							for (p1 = sortquizresult.begin(); p1 != sortquizresult.end(); p1++)
+							{
+								if (p1->getID() == str[0]) {
+									p1->add(str[1]);
+									sameID = true;
+									break;
+								}
+							}
+						}
+					}
+					sort(sortquizresult.begin(), sortquizresult.end(), Quizresult::comp_Quizresult);
+					for (p1 = sortquizresult.begin(); p1 != sortquizresult.end(); p1++)
+					{
+						vector<string>::iterator p3;
+						int i = 0;
+						p1->scoresort();
+						cout << "-" << p1->getID() << "-" << endl;
+						for (p3 = p1->score.begin(); p3 != p1->score.end(); p3++) {
+							cout << p1->score[i] << endl;
+							i++;
+						}
+					}
+				}
+				quizresultfile.close();
+				system("pause>null");
+				break;
+			}//전체퀴즈
+			else if (a == 3) {
+				return false;
+			}//메인메뉴로 돌아가게
+		}
+		//cout << "잘못된 값을 입력하셨습니다.재확인 바랍니다. 1.YES 2.NO  ";
+		//cin >> a;
 	}
+	return false;
 }
 
 string Member::getID() {
@@ -220,3 +280,11 @@ void Member::writefile() {
 	writefile.close();//마무리로 파일 닫음
 }
 
+void Member::writequizresult(string score) {
+	ofstream writefile;
+	writefile.open("quizresult.txt");//quizresult라는 단어가 10글자이므로 아이디랑 겹칠일이 없음
+	string line;//아이디가 .txt로 저장이 되므로(파일읽기위해) .txt를 뺀 나머지 입력시 아이디부분
+	line = readID.substr(0, readID.length() - 4);//txt부분잘라냄
+	writefile << line << ":" << score << endl;//저장시 ID.txt:점수/점수 이런식으로 저장
+	writefile.close();//마무리로 파일 닫음
+}
