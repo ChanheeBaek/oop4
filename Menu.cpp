@@ -49,7 +49,7 @@ LoginMenu ShowLoginMenu(Member* member) {
 		cout << "1. 단어장\n";
 		cout << "2. 암기\n";
 		cout << "3. 퀴즈\n";
-		cout << "4. 종료\n";
+		cout << "4. 로그아웃\n";
 		//로그인시 바로 파일쓸수 있게 준비
 		//원하는 메뉴 입력받기
 		char select;
@@ -102,7 +102,7 @@ WordbookMenu ShowWordbookMenu(Member* member) {
 		cout << "1. 단어추가\n";
 		cout << "2. 단어찾기\n";
 		cout << "3. 단어삭제\n";
-		cout << "4. 종료\n";
+		cout << "4. 뒤로가기\n";
 		//원하는 메뉴 입력받기
 
 		getline(cin, select);
@@ -207,6 +207,7 @@ WordbookMenu ShowWordbookMenu(Member* member) {
 					{
 
 						cin >> select;
+						
 						if (select == "1")
 						{
 							member->wordlist.del(index);
@@ -218,9 +219,11 @@ WordbookMenu ShowWordbookMenu(Member* member) {
 						}
 						else if (select == "2")
 						{
+							
 							break;
 						}
 						else
+							
 							cout << "정확환 메뉴를 입력해주세요 1.YES 2.NO ";
 					}
 				}
@@ -243,15 +246,6 @@ WordbookMenu ShowWordbookMenu(Member* member) {
 		continue;
 		return W_exit;
 
-		/*
-		case '4':
-		return W_exit;//종료
-		default:
-		cout << "\n올바른 메뉴를 선택해주세요\n";
-		break;
-		}
-		}
-		return W_exit; */
 	}
 }
 
@@ -265,11 +259,11 @@ StudyMenu ShowStudyMenu(Member* member)
 
 		Study study(&(member->wordlist));//회원에 단어장 study에추가
 
-		cout << "1. 북마크보기\n";
-		cout << "2. 의미만보기\n";
-		cout << "3. 단어만보기\n";
-		cout << "4. 함께보기\n";
-		cout << "5. 종료\n";
+		cout << "1. 북마크한 단어보기\n";
+		cout << "2. 의미만 보기\n";
+		cout << "3. 단어만 보기\n";
+		cout << "4. 의미/단어 보기\n";
+		cout << "5. 뒤로가기\n";
 		//원하는 메뉴 입력받기
 		char select;
 		cin >> select;
@@ -312,7 +306,7 @@ QuizMenu ShowQuizMenu(Member* member) {
 		//메뉴
 		cout << "1. 단어 퀴즈 - 북마크\n";
 		cout << "2. 단어 퀴즈 - 전체\n";;
-		cout << "3. 종료\n";
+		cout << "3. 뒤로가기\n";
 
 		//원하는 메뉴 입력받기
 		char select;
@@ -320,11 +314,11 @@ QuizMenu ShowQuizMenu(Member* member) {
 		switch (select)
 		{
 		case '1':
-			q.quizBookmark();	//string return 하는 거 받아서 출력 "n"이면 에러니까 출력 x		
+			member->writequizresult(q.quizBookmark());	//string return 하는 거 받아서 출력 "n"이면 에러니까 파일출력 x		
 			break;
 			return Q_bookmarkquiz;
 		case '2':
-			q.quizAll();		//string return 하는 거 받아서 출력 "n"이면 에러니까 출력 x
+			member->writequizresult(q.quizAll());		//string return 하는 거 받아서 출력 "n"이면 에러니까 파일출력 x
 			break;
 			return Q_meaningquiz;
 		case '3':

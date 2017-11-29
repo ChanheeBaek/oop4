@@ -127,7 +127,7 @@ bool Member::adminlogin() {
 	while (1) {
 		system("cls");
 		string line;//파일에서 단어 한줄씩 읽어서 저장하는곳
-		int index;
+		int index, sindex;
 		cout << "1.ID" << endl;
 		cout << "2.전체퀴즈결과" << endl;
 		cout << "3.종료" << endl;
@@ -136,7 +136,7 @@ bool Member::adminlogin() {
 		
 		while (1) {
 			if (a == 1) {
-				string ID[2];//ID[0] = 입력받은ID, ID[1] = .txt
+				string ID[3];//ID[0] = 입력받은ID, ID[1] = .txt
 				ID[1] = ".txt";
 				system("cls");
 				while (getchar() != '\n');
@@ -148,21 +148,29 @@ bool Member::adminlogin() {
 					if (myfile.is_open()) {
 						string str[3];//3개항목저장할곳
 						string cutter = "/";//자르는기준
-						getline(myfile, line);//처음은 비번이라 한번 읽은뒤 다음줄부터실행
+						getline(myfile, ID[2]);//처음은 비번이라 한번 읽은뒤 다음줄부터실행
 						while (!myfile.eof())
 						{
 							getline(myfile, line);
-							for (int k = 0; k < 3; k++) {
-								index = line.find(cutter);
-								str[k] = line.substr(0, index);
-								line = line.substr(index + 1, line.length());
+							index = line.find(cutter);
+							if (index == -1)
+								break;
+							str[0] = line.substr(0, index);
+							for (int k = 1; k<3; k++) {
+								sindex = index + 1;
+								index = line.find(cutter, sindex);
+								str[k] = line.substr(sindex, index - sindex);
 							}
 							Word a(str);
 							wordlist.add(a);
-						}
+						}						
+						readID = ID[0];
+						password = ID[2];
 						WordbookMenu wordbookmenu;
 						wordbookmenu = ShowWordbookMenu(this);
-						return true;
+						readID = "admin.txt";
+						password = "1234567890";
+						break;
 					}
 					else {
 						cout << "등록되어있지 않은 ID입니다. 메뉴를 종료 하시겠습니까? 1.YES 2.NO  ";
@@ -183,7 +191,7 @@ bool Member::adminlogin() {
 					}
 					break;
 				}
-				continue;
+				break;
 			}//ID
 			else if (a == 2) {
 				system("cls");
@@ -199,6 +207,7 @@ bool Member::adminlogin() {
 					{
 						getline(quizresultfile, line);//한줄씩 읽어서
 						index = line.find(cutter);
+						if (index == -1){ break; }
 						str[0] = line.substr(0, index);//아이디
 						str[1] = line.substr(index + 1, line.length());//점수
 						if (firstID == 0) {//처음에는quizresult 바로 추가
@@ -281,10 +290,12 @@ void Member::writefile() {
 }
 
 void Member::writequizresult(string score) {
-	ofstream writefile;
-	writefile.open("quizresult.txt");//quizresult라는 단어가 10글자이므로 아이디랑 겹칠일이 없음
-	string line;//아이디가 .txt로 저장이 되므로(파일읽기위해) .txt를 뺀 나머지 입력시 아이디부분
-	line = readID.substr(0, readID.length() - 4);//txt부분잘라냄
-	writefile << line << ":" << score << endl;//저장시 ID.txt:점수/점수 이런식으로 저장
-	writefile.close();//마무리로 파일 닫음
+	if (score != "n") {
+		ofstream writefile;
+		writefile.open("quizresult.txt", ios::app);//quizresult라는 단어가 10글자이므로 아이디랑 겹칠일이 없음,ios::app으로 마지막부터쓰도록추가
+		string line;//아이디가 .txt로 저장이 되므로(파일읽기위해) .txt를 뺀 나머지 입력시 아이디부분
+		line = readID.substr(0, readID.length() - 4);//txt부분잘라냄
+		writefile << line << ":" << score << endl;//저장시 ID.txt:점수/점수 이런식으로 저장
+		writefile.close();//마무리로 파일 닫음
+	}
 }

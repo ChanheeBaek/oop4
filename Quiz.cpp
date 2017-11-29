@@ -189,8 +189,8 @@ string Quiz::quizAll()
 					length = length / 3;
 				hint = wordlist->getWord(i).getWord().substr(0, length);
 				b.gotoxy(25, 7);
-				cout << "ÈùÆ®: " << hint;
-			}
+				cout << "ÈùÆ®: " << hint;					
+			} 
 			else if (select == "1")
 			{
 				system("cls");
